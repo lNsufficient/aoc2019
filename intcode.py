@@ -24,21 +24,18 @@ class Intcode(object):
                 break;
  
 
-    def get_params(self, nbr_params):
-        self.address += nbr_params
-        return self.memory[self.address - nbr_params: self.adress]
+    def args(self, nbr_params):
+        self.address += nbr_params+1
+        return self.memory[self.address - nbr_params: self.address]
 
     def rep(self, i, val):
         self.memory[i] = val
 
     def add(self):
-        i1 = self.memory[self.memory[self.address+1]]
-        i2 = self.memory[self.memory[self.address+2]]
-        self.rep(self.memory[self.address+3], i1+i2) 
-        self.address += 4
+        args = self.args(3)
+        self.rep(args[2], self.memory[args[0]]+self.memory[args[1]]) 
 
     def mul(self):
-        args = self.get_params(3)
-        self.address += 4
+        args = self.args(3)
         self.rep(args[2], self.memory[args[0]]*self.memory[args[1]])
  
